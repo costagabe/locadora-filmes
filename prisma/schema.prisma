@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+
+}
+
+model Director {
+  id        String @id @default(uuid())
+  firstName String
+  lastName  String
+
+  Movie Movie[]
+}
+
+model Actor {
+  id        String      @id @default(uuid())
+  firstName String
+  lastName  String
+  Movie     Movie[]     @relation("MovieCast")
+  MovieCast MovieCast[]
+}
+
+model Genre {
+  id         String       @id @default(uuid())
+  name       String
+  movies     Movie[]      @relation("MovieGenre")
+  MovieGenre MovieGenre[]
+}
+
+model Movie {
+  id                String              @id @default(uuid())
+  title             String
+  description       String
+  releaseDate       DateTime
+  rating            Float
+  availableStock    Int
+  posterImage       String
+  rentalPrice       Float
+  directorId        String
+  director          Director            @relation(fields: [directorId], references: [id])
+  rental            Rental[]            @relation("MovieRental")
+  reservation       Reservation[]       @relation("MovieReservation")
+  cast              Actor[]             @relation("MovieCast")
+  genres            Genre[]             @relation("MovieGenre")
+  MovieGenre        MovieGenre[]
+  MovieReservation  MovieReservation[]
+  MovieRental       MovieRental[]
+  MovieCast         MovieCast[]
+  MovieRatingReview MovieRatingReview[]
+}
+
+model MovieGenre {
+  movie       Movie @relation(fields: [movieId], references: [id])
+  reservation Genre @relation(fields: [genreId], references: [id])
+
+  movieId       String
+  genreId       String
+  Reservation   Reservation? @relation(fields: [reservationId], references: [id])
+  reservationId String?
+
+  @@id([movieId, genreId])
+}
+
+model MovieReservation {
+  movie         Movie       @relation(fields: [movieId], references: [id])
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+  movieId       String
+  reservationId String
+
+  @@id([reservationId, movieId])
+}
+
+model MovieRental {
+  movie    Movie  @relation(fields: [movieId], references: [id])
+  rental   Rental @relation(fields: [rentalId], references: [id])
+  movieId  String
+  rentalId String
+
+  @@id([rentalId, movieId])
+}
+
+model MovieCast {
+  movie   Movie  @relation(fields: [movieId], references: [id])
+  actor   Actor  @relation(fields: [actorId], references: [id])
+  movieId String
+  actorId String
+
+  @@id([actorId, movieId])
+}
+
+model Client {
+  id                String              @id @default(uuid())
+  person            Person              @relation(fields: [personId], references: [id])
+  rentalHistory     Rental[]
+  Reservation       Reservation[]
+  MovieRatingReview MovieRatingReview[]
+  personId          String              @unique
+}
+
+model Address {
+  id       String @id @default(uuid())
+  street   String
+  city     String
+  state    String
+  zipCode  String
+  number  String
+  person   Person? @relation(fields: [personId], references: [id])
+  personId String? @unique
+}
+
+model Person {
+  id          String    @id @default(uuid())
+  firstName   String
+  lastName    String
+  phoneNumber String
+  address     Address?
+  addressId   String?   @unique
+  client      Client?
+  employee    Employee? @relation(fields: [employeeId], references: [id])
+  employeeId  String?
+  User        User?
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  provider String
+  providerId String
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+
+  Employee   Employee?  @relation(fields: [employeeId], references: [id])
+  employeeId String?    @unique
+  UserRole   UserRole[]
+  Role       Role[]     @relation("UserRole")
+  roleId     String?
+}
+
+model UserRole {
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
+  userId String
+  roleId String
+
+  @@id([roleId, userId])
+}
+
+model Role {
+  id       String     @id @default(uuid())
+  name     String
+  users    User[]     @relation("UserRole")
+  UserRole UserRole[]
+}
+
+model Employee {
+  id               String   @id @default(uuid())
+  processedRentals Rental[]
+  Person           Person[]
+  User             User?
+}
+
+model Rental {
+  id                 String        @id @default(uuid())
+  rentalDate         DateTime      @default(now())
+  expectedReturnDate DateTime
+  rentedMovies       Movie[]       @relation("MovieRental")
+  client             Client        @relation(fields: [clientId], references: [id])
+  attendant          Employee?     @relation(fields: [employeeId], references: [id])
+  rentalMethod       String
+  payment            Payment?
+  clientId           String
+  employeeId         String
+  MovieRental        MovieRental[]
+}
+
+model Reservation {
+  id                 String             @id @default(uuid())
+  reservationDate    DateTime           @default(now())
+  expectedPickupDate DateTime
+  reservedMovies     Movie[]            @relation("MovieReservation")
+  client             Client             @relation(fields: [clientId], references: [id])
+  rentalMethod       String
+  clientId           String
+  movieId            String?
+  MovieReservation   MovieReservation[]
+  MovieGenre         MovieGenre[]
+}
+
+model Payment {
+  id          String   @id @default(uuid())
+  paymentDate DateTime @default(now())
+  amountPaid  Float
+  rental      Rental   @relation(fields: [rentalId], references: [id])
+  rentalId    String   @unique
+}
+
+model MovieRatingReview {
+  id            String @id @default(uuid())
+  rating        Int
+  clientComment String
+  movie         Movie  @relation(fields: [movieId], references: [id])
+  client        Client @relation(fields: [clientId], references: [id])
+  movieId       String
+  clientId      String
+}
+
+model SystemConfiguration {
+  id              String @id @default(uuid())
+  lateFeeRate     Float
+  maxRentalPeriod Int
+}
