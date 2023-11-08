@@ -17,11 +17,10 @@
     "@pinia/nuxt": "^0.4.11",
     "autoprefixer": "^10.4.16",
     "fibers": "^5.0.3",
-    "node-sass": "^9.0.0",
     "nuxt": "^3.7.3",
     "postcss": "latest",
     "prisma": "5.5.2",
-    "sass": "^1.68.0",
+    "sass": "^1.69.5",
     "sass-loader": "10",
     "vuetify": "^3.3.17",
     "vuetify-nuxt-module": "latest"

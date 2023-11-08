@@ -1,4 +1,5 @@
 <script setup lang="ts">
+    definePageMeta({ layout: "backoffice" });
     const supabase = useSupabaseClient();
     const router = useRouter();
 
@@ -6,6 +7,7 @@
 
     async function signOut() {
         await supabase.auth.signOut();
+
         router.push("/signin");
     }
 </script>

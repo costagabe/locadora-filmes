@@ -3,7 +3,9 @@
     import bg from "~/src/assets/images/bg.png";
 
     const router = useRouter();
+    const route = useRoute()
     definePageMeta({ layout: "default" });
+
 </script>
 
 <template>
@@ -35,7 +37,7 @@
                     <v-col>
                         <v-btn
                             color="primary"
-                            @click="router.push('/signin')"
+                            @click="$router.push('/signin')"
                         >
                             Login
                         </v-btn>
@@ -60,7 +62,9 @@
                     </v-col>
                 </v-row>
                 <v-row class="text-body-1">
-                    <v-col>
+                    <v-col
+                    
+                    >
                         Clique
                         <nuxt-link
                             href="/signin"

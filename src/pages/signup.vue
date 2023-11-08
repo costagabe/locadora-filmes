@@ -1,9 +1,9 @@
 <script setup lang="ts">
-    import { SubmitEventPromise } from "vuetify/lib/framework.mjs";
+    import type { SubmitEventPromise } from "vuetify/lib/framework.mjs";
     import Swal from "sweetalert2";
     import { phone } from "../utils/rules";
     import { VStepper } from "vuetify/labs/VStepper";
-    import { SignupData } from "../types/SignUpData";
+    import type { SignupData } from "../types/SignUpData";
 
     const steps = ["Dados de usuário", "Dados pessoais", "Endereço"];
 

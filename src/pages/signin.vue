@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { SubmitEventPromise } from "vuetify/lib/framework.mjs";
+    import type { SubmitEventPromise } from "vuetify/lib/framework.mjs";
     import Swal from "sweetalert2";
 
     const supabase = useSupabaseClient();
@@ -8,7 +8,13 @@
     const router = useRouter();
 
     onBeforeMount(async () => {
-        if ((await supabase.auth.getUser()).data.user?.id) router.push("/home");
+        const session = await supabase.auth.getSession();
+
+        if (session.data) {
+            console.log(`foi aqui`);
+            
+            router.push("/home");
+        }
     });
 
     definePageMeta({ layout: "auth" });
