@@ -26,6 +26,15 @@
                 nav: true,
             },
         },
+        {
+            title: "Diretores",
+            value: "directors",
+            props: {
+                icon: "mdi-help-box",
+                link: true,
+                nav: true,
+            },
+        },
     ];
 
     const router = useRouter();

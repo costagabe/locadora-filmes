@@ -1,7 +1,21 @@
 import moment from "moment";
+import { useMoviesStore } from "~/src/pages/backoffice/movies/moviesStore";
 
 export default defineEventHandler(async (event) => {
-    return (await prisma.movie.findMany({ include: { genres: {}, cast: {} } })).map((movie) => ({
+    const id = getRouterParam(event, "id");
+    const movie = await prisma.movie.findFirst({
+        where: { id },
+        include: { genres: {}, cast: {} },
+    });
+    
+
+    if (!movie)
+        throw createError({
+            status: 404,
+            message: "Filme não encontrado",
+        });
+
+    return {
         id: movie.id,
         title: movie.title,
         description: movie.description,
@@ -11,5 +25,6 @@ export default defineEventHandler(async (event) => {
         directorId: movie.directorId,
         cast: movie.cast.map((cast) => cast.id),
         genres: movie.genres.map((genre) => genre.id),
-    }));
+    };
+
 });

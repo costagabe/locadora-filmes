@@ -1,7 +1,12 @@
-export type MovieHeader = {
-    name: string;
+
+export type MovieDTO = Partial<{
+    id: string;
+    title: string;
     description: string;
-    year: string;
-    duration: string;
-    actions: string;
-};
+    releaseDate: string;
+    duration: number | null;
+    posterImage: string;
+    directorId: string;
+    cast: Array<string>;
+    genres: Array<string>;
+}>;

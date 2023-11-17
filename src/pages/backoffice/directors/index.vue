@@ -1,30 +1,16 @@
 <script setup lang="ts">
-    import { VDataTable } from "vuetify/components";
-    import { VBtn } from "vuetify/lib/components/index.mjs";
-    import { moviesHeaders as headers } from "./TableHeaders";
-    import { useMoviesStore } from "./moviesStore";
+    import { directorsHeaders as headers } from "./TableHeaders";
 
     definePageMeta({ layout: "backoffice" });
 
     const router = useRouter();
-    const store = useMoviesStore();
 
-    const { movies } = storeToRefs(store);
+    const { data: directors } = useFetch("/api/directors");
+    console.log(directors.value);
+    
 
-    const { refresh } = store;
-
-    onMounted(() => {
-        refresh();
-    });
-
-    function handleCreateMovie() {
-        router.push({ name: "CreateMovie" });
-    }
-
-    function toHour(value: number) {
-        const hour = Math.floor(value / 60);
-        const minutes = value - hour * 60;
-        return hour.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
+    function handleCreateDirector() {
+        router.push({ name: "CreateDirector" });
     }
 </script>
 
@@ -34,14 +20,14 @@
         class="tw-h-full"
     >
         <v-card>
-            <v-card-title class="tw-bg-secondary">
+            <v-card-title class="tw-bg-red-500">
                 <v-row justify="space-between">
-                    <v-col cols="auto"> Filmes </v-col>
+                    <v-col cols="auto"> Diretores </v-col>
                     <v-col cols="auto">
                         <v-btn
                             variant="outlined"
                             color="accent"
-                            @click="handleCreateMovie"
+                            @click="handleCreateDirector"
                         >
                             Novo
                         </v-btn>
@@ -50,23 +36,12 @@
             </v-card-title>
             <v-card-text class="pa-4">
                 <v-data-table
-                    :items="movies ?? []"
+                    :items="directors ?? []"
                     :headers="headers"
                     items-per-page="10"
                     :items-per-page-options="[10, 20, 30]"
                     density="default"
                 >
-                    <template #item.posterImage="{ item }">
-                        <v-img
-                            v-if="item.posterImage !== null"
-                            :src="item.posterImage"
-                            :width="75"
-                            class="my-2"
-                        />
-                    </template>
-                    <template #item.duration="{ item }">
-                        {{ toHour(item.duration ?? 0) }}
-                    </template>
                     <template #item.actions="{ item }">
                         <v-row justify="center">
                             <v-col cols="auto">
@@ -77,7 +52,7 @@
                                     variant="elevated"
                                     @click="
                                         router.push({
-                                            name: 'UpdateMovie',
+                                            name: 'UpdateDirector',
                                             params: { id: item.id },
                                         })
                                     "

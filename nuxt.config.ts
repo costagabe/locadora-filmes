@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import * as vt from "vue-toastification";
+
 export default defineNuxtConfig({
     devtools: { enabled: true },
     modules: ["@pinia/nuxt", "vuetify-nuxt-module", "@nuxtjs/supabase"],
@@ -15,12 +17,7 @@ export default defineNuxtConfig({
         },
     },
     imports: {
-        dirs: [
-            "./src/composables",
-            "./src/stores",
-            "./server/connections",
-            "./src/utils",
-        ],
+        dirs: ["./src/composables", "./src/stores", "./server/connections", "./src/utils"],
     },
     dir: {
         pages: "./src/pages",

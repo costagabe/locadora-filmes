@@ -42,6 +42,7 @@ model Movie {
   posterImage       String
   rentalPrice       Float
   directorId        String
+  duration          Int?
   director          Director            @relation(fields: [directorId], references: [id])
   rental            Rental[]            @relation("MovieRental")
   reservation       Reservation[]       @relation("MovieReservation")

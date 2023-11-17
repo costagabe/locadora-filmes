@@ -1,27 +1,14 @@
 <script setup lang="ts">
-    import { useMoviesStore } from "./moviesStore";
     import Swal from "sweetalert2";
+    import { useMoviesStore } from "./moviesStore";
 
-    definePageMeta({ layout: "backoffice", name: "UpdateMovie" });
-
+    definePageMeta({ layout: "backoffice", name: "CreateMovie" })
+    
     const swal = inject<typeof Swal>("$swal");
-    const route = useRoute();
-    const id = computed(() => route.params.id as string);
 
     const { movie } = storeToRefs(useMoviesStore());
-    const {  setMovie, reset } = useMoviesStore();
 
-    const { data } = useFetch(`/api/movies/${id.value}`, { immediate: true, key: id.value });
-
-    watch(
-        data,
-        (value) => {
-            if (value) {
-                setMovie(value);
-            }
-        },
-        { immediate: true }
-    );
+    const { reset } = useMoviesStore();
 
     function setReleaseDate(value: string) {
         movie.value.posterImage = value;
@@ -29,8 +16,8 @@
 
     async function saveMovie() {
         try {
-            await $fetch(`/api/movies/${id.value}`, {
-                method: "PUT",
+            await $fetch(`/api/movies`, {
+                method: "POST",
                 body: movie.value,
             });
             swal?.fire("Success", "Movie saved successfully", "success");
@@ -38,7 +25,6 @@
             swal?.fire("Error", "Movie could not be saved", "error");
         }
     }
-
 </script>
 
 <template>
