@@ -38,10 +38,9 @@
     ];
 
     const router = useRouter();
-    const userStore = useUserStore();
     const { fullName } = storeToRefs(usePersonStore());
 
-    function teste({ id }: { id: string }) {
+    function changeRoute({ id }: { id: string } & any) {
         router.push(`/backoffice/${id}`);
     }
 </script>
@@ -49,8 +48,11 @@
 <template>
     <v-container
         fluid
-        class="pa-0 tw-h-full"
+        class="pa-0 pt-4 tw-h-full"
     >
+    <v-row>
+        <nuxt-loading-indicator />
+    </v-row>
         <v-layout class="tw-h-full">
             <v-app-bar
                 color="primary"
@@ -84,7 +86,7 @@
                 />
                 <v-divider class="my-4" />
                 <v-list
-                    @click:select="teste"
+                    @click:select="changeRoute"
                     :items="items"
                 ></v-list>
             </v-navigation-drawer>

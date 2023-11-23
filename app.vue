@@ -4,6 +4,12 @@
         class="tw-bg-slate-600"
         theme="locadoraTheme"
     >
-        <NuxtLayout> <NuxtPage /> </NuxtLayout>
+        <NuxtLayout>
+            <NuxtLoadingIndicator
+                :height="5"
+                :throttle="0"
+            />
+            <NuxtPage />
+        </NuxtLayout>
     </v-app>
 </template>
