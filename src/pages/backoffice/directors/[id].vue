@@ -1,22 +1,18 @@
 <script setup lang="ts">
-    import Swal from "sweetalert2";
+    import type { DirectorDTO } from "~/src/types/dtos/director";
 
     definePageMeta({ layout: "backoffice", name: "UpdateDirector" });
 
-    const swal = inject<typeof Swal>("$swal");
     const route = useRoute();
-    const { data: director } = useFetch(`/api/directors/${route.params.id}`);
 
+    const director = ref<DirectorDTO>({});
+    const { data } = useFetch(`/api/directors/${route.params.id}`);
+
+    useInitialFetch(data, director);
+
+const { save } = useBasicSave("/api/directors", director, "PUT");
     async function saveDirector() {
-        try {
-            await $fetch(`/api/directors`, {
-                method: "POST",
-                body: director.value,
-            });
-            swal?.fire("Success", "Director saved successfully", "success");
-        } catch (e) {
-            swal?.fire("Error", "Director could not be saved", "error");
-        }
+        save()
     }
 </script>
 

@@ -1,27 +1,14 @@
 <script setup lang="ts">
-    import type { Director } from "@prisma/client";
-    import Swal from "sweetalert2";
+    import type { DirectorDTO } from "~/src/types/dtos/director";
 
     definePageMeta({ layout: "backoffice", name: "CreateDirector" });
 
-    const swal = inject<typeof Swal>("$swal");
+    const director = ref<DirectorDTO>({});
 
-    const director = ref<Partial<Director>>({
-        firstName: "",
-        lastName: "",
-    });
-
+    const { save } = useBasicSave("/api/directors", director, "POST");
 
     async function saveDirector() {
-        try {
-            await $fetch(`/api/directors`, {
-                method: "POST",
-                body: director.value,
-            });
-            swal?.fire("Success", "Director saved successfully", "success");
-        } catch (e) {
-            swal?.fire("Error", "Director could not be saved", "error");
-        }
+        save();
     }
 </script>
 

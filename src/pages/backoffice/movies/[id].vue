@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import _ from "lodash";
-import { useInitialFetch } from "~/src/composables/useInitialFetch";
+    import { useInitialFetch } from "~/src/composables/useInitialFetch";
     import type { MovieDTO } from "~/src/types/dtos/movie";
 
     definePageMeta({ layout: "backoffice", name: "UpdateMovie" });
@@ -12,10 +12,12 @@ import { useInitialFetch } from "~/src/composables/useInitialFetch";
 
     const { data } = useFetch(`/api/movies/${id.value}`, { immediate: true, key: id.value });
 
-    useInitialFetch(data, movie)
+    useInitialFetch(data, movie);
+
+    const { save } = useBasicSave("/api/movies", movie, "PUT");
 
     async function saveMovie() {
-        useBasicSave("/api/movies", movie.value, "POST");
+        save();
     }
 </script>
 

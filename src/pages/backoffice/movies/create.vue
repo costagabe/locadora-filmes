@@ -4,9 +4,10 @@
     definePageMeta({ layout: "backoffice", name: "CreateMovie" });
 
     const movie = ref<MovieDTO>({});
+    const { save } = useBasicSave("/api/movies", movie, "POST");
 
     async function saveMovie() {
-        useBasicSave("/api/movies", movie.value, "POST");
+        save();
     }
 </script>
 
