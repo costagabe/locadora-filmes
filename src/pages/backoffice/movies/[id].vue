@@ -1,51 +1,27 @@
 <script setup lang="ts">
-    import { useMoviesStore } from "./moviesStore";
-    import Swal from "sweetalert2";
+    import _ from "lodash";
+import { useInitialFetch } from "~/src/composables/useInitialFetch";
+    import type { MovieDTO } from "~/src/types/dtos/movie";
 
     definePageMeta({ layout: "backoffice", name: "UpdateMovie" });
 
-    const swal = inject<typeof Swal>("$swal");
     const route = useRoute();
     const id = computed(() => route.params.id as string);
 
-    const { movie } = storeToRefs(useMoviesStore());
-    const {  setMovie, reset } = useMoviesStore();
+    const movie = ref<MovieDTO>({});
 
     const { data } = useFetch(`/api/movies/${id.value}`, { immediate: true, key: id.value });
 
-    watch(
-        data,
-        (value) => {
-            if (value) {
-                setMovie(value);
-            }
-        },
-        { immediate: true }
-    );
-
-    function setReleaseDate(value: string) {
-        movie.value.posterImage = value;
-    }
+    useInitialFetch(data, movie)
 
     async function saveMovie() {
-        try {
-            await $fetch(`/api/movies/${id.value}`, {
-                method: "PUT",
-                body: movie.value,
-            });
-            swal?.fire("Success", "Movie saved successfully", "success");
-        } catch (e) {
-            swal?.fire("Error", "Movie could not be saved", "error");
-        }
+        useBasicSave("/api/movies", movie.value, "POST");
     }
-
 </script>
 
 <template>
     <create-update-movie
         v-model="movie"
         @save="saveMovie"
-        @set-release-date="setReleaseDate"
-        @reset="reset"
     />
 </template>

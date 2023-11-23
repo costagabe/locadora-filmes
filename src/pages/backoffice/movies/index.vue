@@ -2,29 +2,16 @@
     import { VDataTable } from "vuetify/components";
     import { VBtn } from "vuetify/lib/components/index.mjs";
     import { moviesHeaders as headers } from "./TableHeaders";
-    import { useMoviesStore } from "./moviesStore";
+    import { toHour } from "~/src/utils/time";
 
     definePageMeta({ layout: "backoffice" });
 
     const router = useRouter();
-    const store = useMoviesStore();
 
-    const { movies } = storeToRefs(store);
-
-    const { refresh } = store;
-
-    onMounted(() => {
-        refresh();
-    });
+    const movies = useFetch(`/api/movies`).data;
 
     function handleCreateMovie() {
         router.push({ name: "CreateMovie" });
-    }
-
-    function toHour(value: number) {
-        const hour = Math.floor(value / 60);
-        const minutes = value - hour * 60;
-        return hour.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
     }
 </script>
 

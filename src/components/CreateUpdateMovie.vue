@@ -9,8 +9,6 @@
 
     type CreateUpdateMovieEmits = {
         (e: "save"): void;
-        (e: "reset"): void;
-        (e: "setReleaseDate", value: string): void;
         (e: "update:modelValue", value: MovieDTO): void;
     };
 
@@ -21,12 +19,10 @@
     const movie = useVModel(props, "modelValue", emit);
 
     const [directors, genres, cast] = [
-        useFetch("/api/directors").data.value ?? [],
-        useFetch("/api/genres").data.value ?? [],
-        useFetch("/api/cast").data.value ?? [],
+        useFetch("/api/directors", { default: () => [] }).data,
+        useFetch("/api/genres", { default: () => [] }).data,
+        useFetch("/api/cast", { default: () => [] }).data,
     ];
-
-    
 
     const movieDate = computed({
         get: () => moment(movie.value.releaseDate, "YYYY-MM-DD").format("YYYY-MM-DD"),
@@ -34,15 +30,10 @@
             movie.value.releaseDate = moment(value, "YYYY-MM-DD").format("YYYY-MM-DD");
         },
     });
-
-    onBeforeUnmount(() => {
-        emit("reset");
-    });
 </script>
 
 <template>
-    <suspense>
-        <create-update
+    <create-update
         v-model="movie"
         title="Filme"
         @save="emit('save')"
@@ -134,5 +125,4 @@
             </v-container>
         </template>
     </create-update>
-    </suspense>
 </template>
