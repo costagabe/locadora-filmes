@@ -1,50 +1,37 @@
 <script setup lang="ts">
-    import type { Director } from "@prisma/client";
     import { useVModel } from "@vueuse/core";
+    import type { GenreDTO } from "../types/dtos/genre";
 
     type CreateUpdateMovieProps = {
-        modelValue: Partial<Director>;
+        modelValue: Partial<GenreDTO>;
     };
 
     type CreateUpdateMovieEmits = {
         (e: "save"): void;
-        (e: "reset"): void;
     };
 
     const emit = defineEmits<CreateUpdateMovieEmits>();
 
     const props = defineProps<CreateUpdateMovieProps>();
 
-    const director = useVModel(props, "modelValue", emit);
-
-    onBeforeUnmount(() => {
-        emit("reset");
-    });
+    const genre = useVModel(props, "modelValue", emit);
 </script>
 
 <template>
     <create-update
-        v-model="director"
-        title="Diretor"
+        v-model="genre"
+        title="Gênero"
         @save="emit('save')"
-        @back="$router.push('/backoffice/directors')"
+        @back="$router.push('/backoffice/genres')"
     >
         <template #form>
             <v-container>
                 <v-row>
                     <v-col>
                         <v-text-field
-                            v-model="director.firstName"
+                            v-model="genre.name"
                             density="compact"
                             label="Nome"
-                            required
-                        />
-                    </v-col>
-                    <v-col>
-                        <v-text-field
-                            v-model="director.lastName"
-                            density="compact"
-                            label="Sobrenome"
                             required
                         />
                     </v-col>

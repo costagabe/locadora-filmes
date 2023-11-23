@@ -4,7 +4,6 @@
             title: "Dashboard",
             value: "dashboard",
             props: {
-                icon: "mdi-view-dashboard",
                 link: true,
                 nav: true,
             },
@@ -13,7 +12,6 @@
             title: "Alugueis",
             value: "rents",
             props: {
-                icon: "mdi-image",
                 nav: true,
             },
         },
@@ -30,7 +28,14 @@
             title: "Diretores",
             value: "directors",
             props: {
-                icon: "mdi-help-box",
+                link: true,
+                nav: true,
+            },
+        },
+        {
+            title: "Gêneros",
+            value: "genres",
+            props: {
                 link: true,
                 nav: true,
             },
@@ -50,9 +55,9 @@
         fluid
         class="pa-0 pt-4 tw-h-full"
     >
-    <v-row>
-        <nuxt-loading-indicator />
-    </v-row>
+        <v-row>
+            <nuxt-loading-indicator />
+        </v-row>
         <v-layout class="tw-h-full">
             <v-app-bar
                 color="primary"
