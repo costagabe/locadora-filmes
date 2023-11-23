@@ -1,7 +1,14 @@
 import moment from "moment";
 
 export default defineEventHandler(async (event) => {
-    return (await prisma.movie.findMany({ include: { genres: {}, cast: {} } })).map((movie) => ({
+    return (
+        await prisma.movie.findMany({
+            include: {
+                genres: {},
+                cast: {},
+            },
+        })
+    ).map((movie) => ({
         id: movie.id,
         title: movie.title,
         description: movie.description,

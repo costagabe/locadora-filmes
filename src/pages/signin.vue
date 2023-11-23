@@ -11,8 +11,6 @@
         const session = await supabase.auth.getSession();
 
         if (session.data) {
-            console.log(`foi aqui`);
-            
             router.push("/home");
         }
     });

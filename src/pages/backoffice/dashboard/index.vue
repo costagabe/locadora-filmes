@@ -8,7 +8,7 @@
         class="tw-h-full"
     >
         <v-card>
-            <v-card-title class="tw-bg-red-500">Dashboard</v-card-title>
+            <v-card-title class="tw-bg-secondary">Dashboard</v-card-title>
             <v-card-text class="pa-4"> FAFAFA</v-card-text>
         </v-card>
     </v-container>

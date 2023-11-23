@@ -24,10 +24,11 @@ export default defineEventHandler(async (event) => {
         data: {
             ...movie,
             cast:{
-                connect: body.cast.map((cast) => ({ id: cast })),
+                set: [],
+                connect: body.cast!.map((cast) => ({ id: cast })),
             },
             genres:{
-                connect: body.genres.map((genre) => ({ id: genre })),
+                connect: body.genres!.map((genre) => ({ id: genre })),
             }
         },
     });

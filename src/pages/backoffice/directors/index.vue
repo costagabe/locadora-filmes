@@ -5,9 +5,7 @@
 
     const router = useRouter();
 
-    const { data: directors } = useFetch("/api/directors");
-    console.log(directors.value);
-    
+    const { data: directors } = useFetch("/api/directors");    
 
     function handleCreateDirector() {
         router.push({ name: "CreateDirector" });
@@ -20,7 +18,7 @@
         class="tw-h-full"
     >
         <v-card>
-            <v-card-title class="tw-bg-red-500">
+            <v-card-title class="tw-bg-secondary">
                 <v-row justify="space-between">
                     <v-col cols="auto"> Diretores </v-col>
                     <v-col cols="auto">

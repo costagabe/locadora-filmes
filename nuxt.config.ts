@@ -24,6 +24,7 @@ export default defineNuxtConfig({
         assets: "./src/assets",
         layouts: "./src/layouts",
         plugins: "./src/plugins",
+        
     },
     pinia: {
         autoImports: ["defineStore", "storeToRefs", ["defineStore", "definePiniaStore"]],
