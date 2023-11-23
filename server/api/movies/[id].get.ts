@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
         where: { id },
         include: { genres: {}, cast: {} },
     });
-    
 
     if (!movie)
         throw createError({
@@ -26,5 +25,4 @@ export default defineEventHandler(async (event) => {
         cast: movie.cast.map((cast) => cast.id),
         genres: movie.genres.map((genre) => genre.id),
     };
-
 });

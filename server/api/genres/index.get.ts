@@ -4,4 +4,3 @@ export default defineEventHandler(async (event) => {
         name: genre.name,
     }));
 });
-

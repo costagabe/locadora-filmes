@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends {id?: string}">
+<script setup lang="ts" generic="T extends { id?: string }">
     import { useVModel } from "@vueuse/core";
 
     type CreateUpdateProps = {

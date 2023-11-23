@@ -41,7 +41,6 @@
     const userStore = useUserStore();
     const { fullName } = storeToRefs(usePersonStore());
 
-
     function teste({ id }: { id: string }) {
         router.push(`/backoffice/${id}`);
     }
@@ -84,7 +83,10 @@
                     title="Seja bem-vindo(a)"
                 />
                 <v-divider class="my-4" />
-                <v-list @click:select="teste" :items="items"></v-list>
+                <v-list
+                    @click:select="teste"
+                    :items="items"
+                ></v-list>
             </v-navigation-drawer>
 
             <v-main class="tw-h-full">

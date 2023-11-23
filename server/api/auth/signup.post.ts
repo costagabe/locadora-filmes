@@ -4,7 +4,7 @@ import { SignupData } from "~/src/types/SignUpData";
 export default defineEventHandler(async (event) => {
     const body = await readBody<SignupData>(event);
     const exists = await prisma.user.findFirst({ where: { email: body.user.email } });
-    
+
     const supabase = serverSupabaseServiceRole(event);
 
     if (exists) {

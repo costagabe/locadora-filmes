@@ -1,4 +1,3 @@
-
 export type MovieDTO = Partial<{
     id: string;
     title: string;

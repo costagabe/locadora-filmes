@@ -10,9 +10,9 @@
 
     useInitialFetch(data, director);
 
-const { save } = useBasicSave("/api/directors", director, "PUT");
+    const { save } = useBasicSave("/api/directors", director, "PUT");
     async function saveDirector() {
-        save()
+        save();
     }
 </script>
 

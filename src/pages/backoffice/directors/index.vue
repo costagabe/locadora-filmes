@@ -5,7 +5,7 @@
 
     const router = useRouter();
 
-    const { data: directors } = useFetch("/api/directors");    
+    const { data: directors } = useFetch("/api/directors");
 
     function handleCreateDirector() {
         router.push({ name: "CreateDirector" });

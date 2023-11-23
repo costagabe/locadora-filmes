@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
     const id = getRouterParam(event, "id");
     const movie = await prisma.movie.findFirst({
         where: { id },
-        
     });
 
     if (!movie)
@@ -18,21 +17,20 @@ export default defineEventHandler(async (event) => {
 
     Object.assign(movie, body);
     movie.releaseDate = moment(movie.releaseDate, "YYYY-MM-DD").toDate();
-    
+
     await prisma.movie.update({
         where: { id },
         data: {
             ...movie,
-            cast:{
+            cast: {
                 set: [],
                 connect: body.cast!.map((cast) => ({ id: cast })),
             },
-            genres:{
+            genres: {
                 connect: body.genres!.map((genre) => ({ id: genre })),
-            }
+            },
         },
     });
 
-    return {movie}
-
+    return { movie };
 });
