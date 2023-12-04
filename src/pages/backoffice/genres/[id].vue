@@ -11,7 +11,6 @@
     useInitialFetch(data, genre);
 
     const { save } = useBasicSave("/api/genres", genre, "PUT");
-  
 </script>
 
 <template>

@@ -4,11 +4,7 @@ import Swal from "sweetalert2";
 
 type Methods = "POST" | "PUT";
 
-export function useBasicSave<T extends Entity>(
-    url: NitroFetchRequest,
-    body: Ref<T>,
-    method: Methods
-) {
+export function useBasicSave<T extends Entity>(url: NitroFetchRequest, body: Ref<T>, method: Methods) {
     const swal = inject<typeof Swal>("$swal");
 
     async function save() {

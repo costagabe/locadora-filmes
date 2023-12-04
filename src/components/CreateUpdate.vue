@@ -31,9 +31,7 @@
                     <v-card>
                         <v-card-title class="tw-bg-secondary pa-4">
                             <v-row justify="space-between">
-                                <v-col cols="auto">
-                                    {{ model.id ? "Editar" : "Novo" }} {{ title }}
-                                </v-col>
+                                <v-col cols="auto"> {{ model.id ? "Editar" : "Novo" }} {{ title }} </v-col>
                                 <v-col cols="auto">
                                     <v-btn
                                         variant="outlined"

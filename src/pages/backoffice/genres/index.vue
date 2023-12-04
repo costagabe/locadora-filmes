@@ -1,11 +1,18 @@
 <script setup lang="ts">
+    import type { QueryParams } from "~/src/types/queryParams";
     import { genresHeaders as headers } from "./TableHeaders";
+    import type { GenreDTO } from "~/src/types/dtos/genre";
 
     definePageMeta({ layout: "backoffice" });
 
     const router = useRouter();
 
-    const { data: genres } = useFetch("/api/genres", { default: () => [] });
+    const query = useQuery<GenreDTO>("name");
+
+    const { data: genres } = useFetch("/api/genres", {
+        default: () => ({ result: [], count: 0 }),
+        query: query,
+    });
 
     function handleCreate() {
         router.push({ name: "CreateGenre" });
@@ -14,15 +21,18 @@
 
 <template>
     <list-item
+        v-model:search.lazy="query.search"
         title="Gêneros"
         @create="handleCreate"
     >
         <template #table>
-            <v-data-table
-                :items="genres"
+            <v-data-table-server
+                :items="genres.result"
                 :headers="headers"
-                items-per-page="10"
-                :items-per-page-options="[10, 20, 30]"
+                v-model:items-per-page="query.perPage"
+                v-model:page="query.page"
+                :items-length="genres.count"
+                :items-per-page-options="[2, 5, 10, 20, 30]"
                 density="default"
             >
                 <template #no-data>
@@ -38,7 +48,7 @@
                         "
                     />
                 </template>
-            </v-data-table>
+            </v-data-table-server>
         </template>
     </list-item>
 </template>

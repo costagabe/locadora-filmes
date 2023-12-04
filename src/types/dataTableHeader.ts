@@ -1,10 +1,4 @@
-export type SelectItemKey =
-    | boolean
-    | null
-    | undefined
-    | string
-    | (string | number)[]
-    | ((item: Record<string, any> | any, fallback?: any) => any);
+export type SelectItemKey = boolean | null | undefined | string | (string | number)[] | ((item: Record<string, any> | any, fallback?: any) => any);
 
 export type DataTableCompareFunction<T = any> = (a: T, b: T) => number;
 export type DataTableHeader = {

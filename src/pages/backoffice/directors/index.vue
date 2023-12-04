@@ -1,11 +1,16 @@
 <script setup lang="ts">
+    import type { QueryParams } from "~/src/types/queryParams";
     import { directorsHeaders as headers } from "./TableHeaders";
+    import type { DirectorDTO } from "~/src/types/dtos/director";
+    import { useQuery } from "~/src/composables/useQuery";
 
     definePageMeta({ layout: "backoffice" });
 
     const router = useRouter();
 
-    const { data: directors } = useFetch("/api/directors");
+    const query = useQuery<DirectorDTO>("firstName");
+
+    const { data: directors } = useFetch("/api/directors", { query });
 
     function handleCreateDirector() {
         router.push({ name: "CreateDirector" });
@@ -16,6 +21,7 @@
     <list-item
         title="Diretor"
         @create="handleCreateDirector"
+        v-model:search="query.search"
     >
         <template #table>
             <v-data-table
