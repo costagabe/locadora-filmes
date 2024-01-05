@@ -1,20 +1,23 @@
 <script setup lang="ts">
-    import type { QueryParams } from "~/src/types/queryParams";
-    import { directorsHeaders as headers } from "./TableHeaders";
-    import type { DirectorDTO } from "~/src/types/dtos/director";
     import { useQuery } from "~/src/composables/useQuery";
+    import type { DirectorDTO } from "~/src/types/dtos/director";
+    import { directorsHeaders as headers } from "./TableHeaders";
 
     definePageMeta({ layout: "backoffice" });
 
     const router = useRouter();
 
-    const query = useQuery<DirectorDTO>("firstName");
+    const {query, loadItem} = useQuery<DirectorDTO>("firstName");
 
-    const { data: directors } = useFetch("/api/directors", { query });
+    const { data: directors } = useFetch("/api/directors", { default: () => ({ result: [], count: 0 }), query });
 
     function handleCreateDirector() {
         router.push({ name: "CreateDirector" });
     }
+
+    
+
+    
 </script>
 
 <template>
@@ -24,11 +27,15 @@
         v-model:search="query.search"
     >
         <template #table>
-            <v-data-table
-                :items="directors ?? []"
+            <v-data-table-server
+                v-model:items-per-page="query.perPage"
+                v-model:page="query.page"
+                :items="directors.result"
                 :headers="headers"
-                items-per-page="10"
-                :items-per-page-options="[10, 20, 30]"
+                :search="query.search"
+                :items-length="directors.count"
+                :items-per-page-options="[2, 10, 20, 30]"
+                @update:options="loadItem"
                 density="default"
             >
                 <template #item.actions="{ item }">
@@ -57,7 +64,7 @@
                         </v-col>
                     </v-row>
                 </template>
-            </v-data-table>
+            </v-data-table-server>
         </template>
     </list-item>
 </template>

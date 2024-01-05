@@ -1,11 +1,11 @@
 import moment from "moment";
-import { useMoviesStore } from "~/src/pages/backoffice/movies/moviesStore";
 
 export default defineEventHandler(async (event) => {
     const id = getRouterParam(event, "id");
+
     const movie = await prisma.movie.findFirst({
         where: { id },
-        include: { genres: {}, cast: {} },
+        include: { genres: {}, cast: {}, director: {} },
     });
 
     if (!movie)

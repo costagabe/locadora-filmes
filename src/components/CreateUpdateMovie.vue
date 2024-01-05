@@ -18,12 +18,13 @@
 
     const movie = useVModel(props, "modelValue", emit);
 
-    const [directors, genres, cast] = [
-        useFetch("/api/directors", { default: () => [] }).data,
-        useFetch("/api/genres", { default: () => [] }).data,
-        useFetch("/api/cast", { default: () => [] }).data,
+    const [{data: directors}, {data: genres}, {data: cast}] = [
+        useFetch("/api/directors", { default: () => ({ result: [], count: 0 }) }),
+        useFetch("/api/genres", { default: () => ({ result: [], count: 0 }) }),
+        useFetch("/api/cast", { default: () => ({ result: [], count: 0 }) }),
     ];
 
+    
     const movieDate = computed({
         get: () => moment(movie.value.releaseDate, "YYYY-MM-DD").format("YYYY-MM-DD"),
         set: (value) => {
@@ -93,7 +94,7 @@
                     <v-col>
                         <v-select
                             v-model="movie.genres"
-                            :items="genres"
+                            :items="genres.result"
                             item-value="id"
                             item-title="name"
                             density="compact"
@@ -105,7 +106,7 @@
                 </v-row>
                 <v-autocomplete
                     v-model="movie.directorId"
-                    :items="directors"
+                    :items="directors.result"
                     density="compact"
                     item-value="id"
                     item-title="fullName"
@@ -114,7 +115,7 @@
                 />
                 <v-autocomplete
                     v-model="movie.cast"
-                    :items="cast"
+                    :items="cast.result"
                     density="compact"
                     item-value="id"
                     item-title="name"

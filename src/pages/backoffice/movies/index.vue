@@ -1,14 +1,16 @@
 <script setup lang="ts">
-    import { VDataTable } from "vuetify/components";
     import { VBtn } from "vuetify/lib/components/index.mjs";
-    import { moviesHeaders as headers } from "./TableHeaders";
+    import type { MovieDTO } from "~/src/types/dtos/movie";
     import { toHour } from "~/src/utils/time";
+    import { moviesHeaders as headers } from "./TableHeaders";
 
     definePageMeta({ layout: "backoffice" });
 
     const router = useRouter();
 
-    const movies = useFetch(`/api/movies`, { default: () => [] }).data;
+    const {query, loadItem} = useQuery<MovieDTO>("title");
+
+    const { data: movies } = useFetch(`/api/movies`, { default: () => ({ count: 0, result: [] }), query });
 
     function handleCreateMovie() {
         router.push({ name: "CreateMovie" });
@@ -17,15 +19,20 @@
 
 <template>
     <list-item
+        v-model:search.lazy="query.search"
         title="Filmes"
         @create="handleCreateMovie"
     >
         <template #table>
-            <v-data-table
-                :items="movies"
+            <v-data-table-server
+                v-model:items-per-page="query.perPage"
+                v-model:page="query.page"
+                :items="movies.result"
                 :headers="headers"
-                items-per-page="10"
-                :items-per-page-options="[10, 20, 30]"
+                :search="query.search"
+                :items-length="movies.count"
+                :items-per-page-options="[2, 10, 20, 30]"
+                @update:options="loadItem"
                 density="default"
             >
                 <template #item.posterImage="{ item }">
@@ -65,7 +72,7 @@
                         </v-col>
                     </v-row>
                 </template>
-            </v-data-table>
+            </v-data-table-server>
         </template>
     </list-item>
 </template>

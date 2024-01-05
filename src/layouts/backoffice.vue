@@ -33,6 +33,14 @@
             },
         },
         {
+            title: "Elenco",
+            value: "cast",
+            props: {
+                link: true,
+                nav: true,
+            },
+        },
+        {
             title: "Gêneros",
             value: "genres",
             props: {
